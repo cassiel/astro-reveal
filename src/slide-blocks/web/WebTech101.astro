@@ -1,0 +1,89 @@
+---
+import Slide from "../../components/Slide.astro"
+import LF from "../../components/LF.astro"
+import S from "../../components/S.astro"
+import Clock from "../../components/Clock.jsx"
+---
+<Slide t1="Technology Introduction" splash={ true } t2="Software and Systems">
+    <ul>
+        <LF>Open source vs. commercial</LF>
+        <LF>Web vs. native desktop vs. mobile app (vs. terminal/command-line)</LF>
+        <LF>Standalone vs. networked (where is the data?)</LF>
+    </ul>
+</Slide>
+
+<Slide t2="Web Architectures">
+    <ul>
+        <LF>Linked hypertext (hence, "The Web")</LF>
+        <LF>Content distributed across multiple linked servers (decentralised&mdash;in theory)</LF>
+        <LF>Server as content store and service provider</LF>
+        <LF>Browser as endpoint:
+            <ul>
+                <LF>Able to download, format and display content</LF>
+                <LF>Able to run code (sandboxed - untrusted)</LF>
+                <LF>Thin client (&#x1F632;)</LF>
+                <LF>No (or hardly any) data storage</LF>
+            </ul>
+        </LF>
+    </ul>
+</Slide>
+
+<Slide t1="Web Technologies 101" splash={ true } t2="The Languages of the Web">
+    <dl class="text-sm-2">
+        <dt class="fragment">HTML</dt>
+        <dd class="fragment">Hypertext markup language: textual content, structural elements, links</dd>
+
+        <dt class="fragment">CSS</dt>
+        <dd class="fragment">Cascading style sheets: formatting, size, colour, layout</dd>
+
+        <dt class="fragment">SVG</dt>
+        <dd class="fragment">Scalable Vector Graphics (more niche): geometric graphics markup</dd>
+
+        <dt class="fragment">JavaScript</dt>
+        <dd class="fragment">The scripting language of the web browser</dd>
+
+        <dt class="fragment"><span class="text-grey">WebAssembly</span></dt>
+        <dd class="fragment text-grey">The assembly language of the web browser (nascent)</dd>
+    </dl>
+</Slide>
+
+<Slide t2="The Back-End Languages of the Web">
+    <dl class="text-sm-1">
+        <div class="fragment">
+            <dt>Java, Python, Ruby, PHP (&#129326;), C/C++, JavaScript, ...</dt>
+            <dd>The menagerie of languages used to build web servers and services</dd>
+        </div>
+
+        <div class="fragment">
+            <dt>SQL, GraphQL, NoSQL, Pandas, ...</dt>
+            <dd>Data organisation and query languages</dd>
+        </div>
+    </dl>
+</Slide>
+
+<Slide t2="Where Things Run">
+    <dl class="text-sm-1">
+        <div class="fragment">
+            <dt>Server-Side</dt>
+            <dd>Authentication/authorisation, networked APIs, databases, page rendering,
+                media support, ...</dd>
+        </div>
+
+        <div class="fragment">
+            <dt>Client-Side</dt>
+            <dd>Dynamic pages: interaction, adaptation, rich media,
+                page rendering, local evaluation and refresh (<Clock client:visible />)
+            </dd>
+        </div>
+    </dl>
+</Slide>
+
+<Slide t2="Who Owns / Controls What?">
+    <ul class="text-sm-1">
+        <LF><S t="orange">Server</S> (data, workflow, access, ...): service provider</LF>
+        <LF><S t="orange">Browser</S> (presentation, local interaction): service user</LF>
+        <LF><em>But</em>: vendors can require JavaScript to control browser use
+            (ref: <a href="https://daringfireball.net/linked/2025/01/18/google-search-javascript">Daring Fireball</a>
+            re: Google)</LF>
+    </ul>
+</Slide>

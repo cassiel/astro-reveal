@@ -1,0 +1,29 @@
+---
+import Slide from "../../components/Slide.astro"
+
+const data = [
+    {n: "Cyclops", d: "Idiot"},
+    {n: "Wolverine", d: "Canadian"},
+    {n: "Storm", d: "Ororo"}
+]
+---
+<Slide>
+    <h3>Table Example</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {
+                data.map(({ n, d }) => <tr>
+                    <td>{ n }</td><td>{ d }</td>
+                </tr>)
+            }
+        </tbody>
+    </table>
+</Slide>

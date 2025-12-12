@@ -1,0 +1,14 @@
+---
+interface Props {
+    f?: string
+    t?: string
+}
+
+const { f, t } = Astro.props
+---
+<span>{
+    (() => {
+        const s = (f ? <span class={ `font-${f}` }><slot /></span> : <slot />)
+        return (t ? <span class={ `text-${t}` }>{ s }</span> : s)
+    })()
+}</span>

@@ -1,0 +1,125 @@
+---
+import { Image } from 'astro:assets'
+import Slide from "../../components/Slide.astro"
+import LF from "../../components/LF.astro"
+import S from "../../components/S.astro"
+import CodeBlock from "../../components/CodeBlock.astro"
+import astro_ext from "../../img/web/vsc-ext-astro.jpg"
+---
+<Slide t1="Starting with Astro" splash={ true } t2="What is Astro?">
+    <ul class="text-sm-1">
+        <LF><S t="orange">Static site generator</S>: completely fixed page content from
+            server, rendered ahead of time (cf. PHP (&#129326;))</LF>
+            <ul><li class="fragment">No back-end support needed</li></ul>
+        <LF><S t="orange">Component based</S>: modular approach to construction of pages</LF>
+        <LF><S t="orange">Collections</S>: can assemble tables, sets of pages from data sources</LF>
+        <LF><S t="orange">Integrations</S>: supports CSS libraries, frameworks like React, ...</LF>
+        <li class="fragment">Open Source</li>
+    </ul>
+</Slide>
+
+<Slide t2="Installation: Node.js">
+    <ul class="text-sm-1">
+        <li>Command line installation (use a terminal program)</li>
+        <li>Astro runs on top of Node.js</li>
+        <li>Install using <code>npm</code> command (Node Package Manager)</li>
+        <li>Install Node.js (and NPM) from here:
+            <a href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a></li>
+        <li>(on macOS: recommend Homebrew, <a href="https://brew.sh/">https://brew.sh/</a>
+            for installing NPM and Node.js: <code>brew install nodejs</code>)</li>
+    </ul>
+</Slide>
+
+<Slide t2="Installation: Astro">
+    <ul class="text-sm-1">
+        <li>Command-line install: <code>npm create astro@latest</code></li>
+    </ul>
+</Slide>
+
+<Slide>
+    <div class="text-sm-2">
+        <CodeBlock lang="text" height="550px">
+            { "  " + `
+  astro   Launch sequence initiated.
+
+    dir   Where should we create your new project?
+            ./ossified-osiris
+
+   tmpl   How would you like to start your new project?
+            A basic, minimal starter
+
+   deps   Install dependencies?
+            Yes
+
+    git   Initialize a new git repository?
+            Yes
+
+        ✔  Project initialized!
+            ■ Template copied
+            ■ Dependencies installed
+            ■ Git initialized
+
+   next   Liftoff confirmed. Explore your project!
+
+          Enter your project directory using cd ./ossified-osiris 
+          Run npm run dev to start the dev server. CTRL+C to stop.
+          Add frameworks like react or tailwind using astro add.
+
+          Stuck? Join us at https://astro.build/chat
+
+ ╭─────╮  Houston:
+ │ ◠ ◡ ◠  Good luck out there, astronaut! 🚀
+ ╰─────╯`.trim()
+            }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="Run Astro">
+    <ul>
+        <li><code>cd <em>[project-folder]</em></code></li>
+        <li><code>npm run dev</code></li>
+        <li>Web server runs at <code>http://localhost:4321</code></li>
+        <li class="fragment">Note: this is a <em>development server</em> with browser
+            support for hot reloading&mdash;production builds are separate</li>
+    </ul>
+</Slide>
+
+<Slide t2="Visual Studio Code">
+    <ul class="text-sm-1">
+        <li class="fragment">Recommended: good editor with highlighting, auto-completion etc.
+            for Astro pages and components, Markdown, JavaScript, JSX</li>
+        <li class="fragment">VS Code support (official)&mdash;highly recommended:</li>
+    </ul>
+
+    <div class="flex justify-center items-center fragment">
+        <Image
+            src={ astro_ext }
+            alt="Astro Extension"
+            height="300"
+            width="500" />
+    </div>
+
+    <ul class="text-sm-1">
+        <li class="fragment">Do an <code>Open Folder...</code> on your Astro project</li>
+    </ul>
+</Slide>
+
+<Slide t2="Astro: First Look">
+    <ul>
+        <li class="fragment"><em>Components</em> (including page layouts): look rather like HTML elements</li>
+        <li class="fragment">Components can be parameterised, reused, ...</li>
+        <li class="fragment">Components can contain JavaScript code (e.g. for
+            collections)&mdash;build time only! (cf. React components)</li>
+    </ul>
+</Slide>
+
+<Slide t2="Experiment">
+    <ul>
+        <li class="fragment">Open the Astro project folder in VS Code</li>
+        <li class="fragment">Start the Astro server: <code>npm run dev</code></li>
+        <li class="fragment">edit <code>index.astro</code> and see
+            how the page updates immediately</li>
+        <li class="fragment">Do the components make sense?</li>
+    </ul>
+</Slide>

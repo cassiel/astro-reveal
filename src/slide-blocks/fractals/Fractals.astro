@@ -1,0 +1,125 @@
+---
+import Slide from "../../components/Slide.astro"
+// import Link from "../../components/Link.astro"
+import CodeBlock from "../../components/CodeBlock.astro"
+import { Image } from 'astro:assets'
+import complex_starter from "../../img/p5/complex-starter.png"
+import attractor from "../../img/p5/attractor.png"
+import secret from "../../img/iu000170_fmc/secret.png"
+---
+<Slide t2="Complex Iteration">
+    <ul class="text-sm-1">
+        <li class="fragment">We can build geometric patterns through repeated
+            multiplication in the complex plane
+        </li>
+    </ul>
+
+    <div class="fragment flex justify-center items-center">
+        <Image
+            src={ complex_starter }
+            alt="Complex Starter"
+            height="375"
+            width="375" />
+    </div>
+
+    <ul class="text-sm-1">
+        <li class="fragment">Experiment with different multiplier values</li>
+    </ul>
+</Slide>
+
+<Slide t2="Attractors">
+    <ul>
+        <li class="fragment">
+            Let's build an interactive version of this
+        </li>
+
+        <li class="fragment">
+            We are going to use an equation of the form \( c = c * c + s \)
+            (where \( s \) means "shift")
+        </li>
+
+        <div class="fragment flex justify-center items-center">
+            <Image
+                src={ attractor }
+                alt="Attractor"
+                height="375"
+                width="375" />
+        </div>
+    </ul>
+</Slide>
+
+<Slide t2="Exploring Attractors">
+    <ul>
+        <li class="fragment">
+            These attractor values either converge or escape
+        </li>
+
+        <li class="fragment">
+            Let's plot a 2D grid of values (\(-2\) to \(2\), \(-2i\) to \(2i\))
+            to see which
+            ones are convergent or divergent
+        </li>
+    </ul>
+</Slide>
+
+<Slide>
+    <div class="text-sm-2">
+        <CodeBlock lang="javascript" lines="*|2-5|10-17|19-23" height="500px">
+            { `
+        for (let x of math.range(0, 100).toArray()) {
+            for (let y of math.range(0, 100).toArray()) {
+                let re = map(x, 0, 99, -2, 2)
+                let im = map(y, 0, 99, -2, 2)
+                let c = math.complex(re, im)
+
+                // We count iterations:
+                let iteration = 0
+
+                // Starting position:
+                let position = math.complex(0, 0)
+
+                // Iterate, exit if we leave the canvas:
+                while (iteration < 50 && position.abs(position) < 2) {
+                    position = math.chain(position).multiply(position).add(c).done()
+                    iteration++
+                }
+
+                if (iteration == 50) {
+                    fill(0)
+                } else {
+                    fill(255)
+                }
+                ...
+            }
+        }
+            `.trim() }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="Final Appearance">
+    <div class="fragment flex justify-center items-center">
+        <Image
+            src={ secret }
+            alt="Secret"
+            height="400"
+            width="400" />
+    </div>
+</Slide>
+
+<Slide t2="Enhancements">
+    <ul>
+        <li class="fragment">
+            How might we go about adding greyscale or colour?
+        </li>
+
+        <li class="fragment">
+            (For points that escape, we can map the number of
+            iterations to a colour value)
+        </li>
+
+        <li class="fragment">
+            How might we <em>zoom in</em> to the visual form?
+        </li>
+    </ul>
+</Slide>

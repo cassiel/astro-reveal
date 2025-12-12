@@ -1,0 +1,67 @@
+---
+/*  Map from an id (representing a unit or subject area) to a list of decks. */
+
+import { getCollection } from "astro:content"
+
+interface Props {
+    id: string,
+    from?: number,
+    limit?: number
+}
+
+const decks = await getCollection("decks")
+
+const { id, from, limit } = Astro.props
+
+function fullpath(id: string, path: string): string {
+    if (id === "ROOT") {
+        return path
+    } else {
+        return `${id}/${path}`
+    }
+}
+
+function slice(a: any[], from: number | undefined, limit: number | undefined): any[] {
+    if (from != undefined) {
+        return (limit ? a.slice(from, limit) : a.slice(from))
+    } else {
+        return a
+    }
+}
+
+---
+<table class="text-sm-3">
+    <thead>
+        <tr>
+            <th>Deck</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {
+            decks.filter(x => (x.id === id)).map(x => (
+                slice(x.data, from, limit).map(({ path, title, description, disabled }) => <tr>
+                    <td>{
+                        (() => {
+                            if (disabled) {
+                                return <span class="text-grey">{ title }</span>
+                            } else {
+                                return <a href={ fullpath(id, path) }>{ title }</a>
+                            }
+                        })()
+                    }</td>
+                    <td>{ 
+                        (() => {
+                            if (disabled) {
+                                return <span class="text-grey">{ description }</span>
+                            } else {
+                                return description
+                            }
+                        })()
+                    }</td>
+                </tr>)
+            ))
+        }
+    </tbody>
+</table>

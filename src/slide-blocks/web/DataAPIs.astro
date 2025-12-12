@@ -1,0 +1,301 @@
+---
+import Slide from "../../components/Slide.astro"
+import CodeBlock from "../../components/CodeBlock.astro"
+import { Image } from 'astro:assets'
+import raw_json from "../../img/web/raw_json.jpg"
+import json_table from "../../img/web/json_table.jpg"
+import bar_chart from "../../img/web/bar-chart.jpg"
+import donut from "../../img/web/donut.jpg"
+import d3_splash from "../../img/web/d3-splash.png"
+---
+<Slide t1="Data APIs">
+    <ul>
+        <li class="fragment">Interactive APIs are generally referred to as AJAX</li>
+        <li class="fragment">
+            <span class="text-red-500">A</span>synchronous
+            <span class="text-red-500">J</span>avaScript
+            <span class="text-red-500">a</span>nd
+            <span class="text-red-500">X</span>ML</li>
+        <li class="fragment">(XML is rare; usually it's JSON or CSV)</li>
+        <li class="fragment">React (JavaScript) can fetch data asynchronously: web request</li>
+    </ul>
+</Slide>
+
+<Slide t2="Development Stack">
+    <p>This is what we currently have running:</p>
+
+    <ul class="text-sm-1">
+        <li>Astro development content server on port <code>4321</code>, serving out Astro pages,
+            React components etc.&mdash;and also assets and data files (from the <code>public</code>
+            folder)</li>
+        <li>Flask development API server on port <code>5050</code>, serving out raw data
+            in JSON or CSV format</li>
+    </ul>
+
+</Slide>
+
+<Slide t2="Example JSON API">
+    <p>Server side (port <code>5050</code>):</p>
+
+    <div class="fragment text-sm-1">
+        <CodeBlock lang="jsx" height="275px" lines="*|3|6-8"> { `
+import random
+
+@app.route("/json")
+def json_start():
+    return {
+        "data" : [{"number" : x,
+                   "square" : x * x,
+                   "rand"   : random.randint(0, 100)} for x in range(100)]
+    }
+`.trim()
+        } </CodeBlock>
+    </div>
+
+    <ul class="text-sm-1">
+        <li class="fragment">Python dictionaries get converted to JSON over the wire</li>
+        <li class="fragment">JSON being served at <code>http://localhost:5050/json</code></li>
+    </ul>
+</Slide>
+
+<Slide t2="Browser Test">
+    <div class="flex justify-center items-center">
+        <Image
+            src={ raw_json }
+            alt="Raw JSON"
+            height="400"
+            width="600" />
+    </div>
+</Slide>
+
+<Slide t2="React Setup (Astro Hosted)">
+    <div class="text-sm-2">
+        <CodeBlock lang="jsx" height="550px" lines="*|7-9"> { `
+import { useState } from 'react'
+
+export default function JSONFetch() {
+    const [state, setState] = useState([])      // List of records
+
+    async function handleClick() {
+        const response = await fetch("http://localhost:5050/json")
+        const json = await response.json()
+        setState(json.data)
+    }
+
+    return (
+        <div>
+            <h1>JSON Data Fetch</h1>
+
+            <table>
+                { state.map(
+                    ({ number, square, rand }) => <tr key={ number }>
+                        <td>{ number }</td>
+                        <td>{ square }</td>
+                        <td>{ rand }</td>
+                    </tr>
+                ) }
+            </table>
+
+            <button onClick={ handleClick }>
+                Fetch data
+            </button>
+        </div>
+    )
+}`.trim()
+        } </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="React Render">
+    <div class="flex justify-center items-center">
+        <Image
+            src={ json_table }
+            alt="JSON in HTML Table"
+            height="400"
+            width="500" />
+    </div>
+
+    <ul class="text-sm-1">
+        <li class="fragment">But: this won't work</li>
+        <li class="fragment">Check browser console for errors</li>
+    </ul>
+</Slide>
+
+<Slide t1="CORS">
+    <ul>
+        <li class="fragment">On server: need to enable CORS
+            (Cross-Origin Resource Sharing)</li>
+        <li class="fragment">Page service (Astro): <code>http://localhost:4321</code></li>
+        <li class="fragment">API service (Flask): <code>http://localhost:5050</code></li>
+    </ul>
+</Slide>
+
+<Slide t2="Enable CORS">
+    <div class="text-sm-1 fragment">
+        <CodeBlock lang="shell" height="100px">
+            { `
+%pip install flask-cors
+            `.trim() }
+        </CodeBlock>
+    </div>
+    
+    <div class="text-sm-1 fragment">
+        <CodeBlock lang="python" height="300px" lines="*|1,4">
+            { `
+from flask_cors import cross_origin
+
+@app.route("/json")
+@cross_origin(origin="*")
+def json_start():
+    return {
+        "data" : [{"number" : x,
+                   "square" : x * x,
+                   "rand"   : random.randint(0, 100)} for x in range(100)]
+    }
+            `.trim() }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t1="D3">
+    <div class="flex justify-center items-center">
+        <Image
+            src={ d3_splash }
+            alt="D3 Splash Page"
+            height="600"
+            width="800" />
+    </div>
+</Slide>
+
+<Slide t1="D3">
+    <ul>
+        <li class="fragment">Sophisticated data visualisation library</li>
+        <li class="fragment">Like React: browser-based, JavaScript, dynamic page update</li>
+        <li class="fragment">Can read and parse CSV files (or CSV streams from server)</li>
+        <li class="fragment">Does not need server API (though of limited use without it)</li>
+        <li class="fragment">For our purposes (for now): black box!
+            <span class="text-black">&#x25FE;</span></li>
+        <li class="fragment">(or a bento box &#127857;)</li>
+        <li class="fragment">Install with: <code>npm install d3</code></li>
+    </ul>
+</Slide>
+
+<Slide t2="D3 Example 1">
+    <ul><li class="fragment">Implemented as React component (<code>.jsx</code>)</li></ul>
+    <ul><li class="fragment">Handout: <code>D3BarExample</code></li></ul>
+    <ul><li class="fragment">Quiz: where is the data coming from?</li></ul>
+
+    <div class="flex justify-center items-center fragment">
+        <Image
+            src={ bar_chart }
+            alt="Bar Chart"
+            height="300"
+            width="300" />
+    </div>
+
+    <ul><li class="fragment">Can you change the graph data?</li></ul>
+</Slide>
+
+<Slide t2="Data Source">
+    <ul>
+        <ul>
+            <li class="fragment">Data CSV: <code>7_OneCatOneNum_header.csv</code></li>
+            <li class="fragment">Two-column: <code>Country</code> &times; <code>Value</code></li>
+            <li class="fragment">Lives in <code>public</code> directory - served statically
+                (or by Astro)</li>
+        </ul>
+    </ul>
+</Slide>
+
+<Slide t2="D3 Example 2">
+    <ul>
+        <li class="fragment">Another "black box" example: donut chart</li>
+        <li class="fragment">CSV data source will be Flask server using Pandas</li>
+        <li class="fragment">Front end: D3 black box (<code>D3PopDonut</code>)</li>
+        <li class="fragment">Not using React at all for rendering (but still updating DOM)</li>
+    </ul>
+</Slide>
+
+<Slide t1="Pandas" t2="Data Manipulation Library">
+    <ul><li class="fragment">Loads inside Flask; install with <code>pip</code></li></ul>
+
+    <div class="fragment text-sm-1">
+        <CodeBlock lang="shell" height="100px">
+            { `
+%pip install pandas
+`.trim()
+            }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="Creating CSV Data">
+    <ul>
+        <li class="fragment">We can also create CSV data directly in Python</li>
+        <li class="fragment">Pandas can turn Python structures into CSV</li>
+    </ul>
+    <div class="fragment text-sm-2">
+        <CodeBlock lang="python" height="400px" lines="*|3|7-15|17-19">
+            { `
+import pandas as pd
+
+@app.route("/pop-data")
+@cross_origin(origin="*")
+def pop_data():
+    output = io.StringIO()
+    my_data = [
+        {"name": "<5", "value": 19912018},
+        {"name": "5-9", "value": 20501982},
+        {"name": "10-14", "value": 20679786},
+        ...
+        {"name": "75-79", "value": 7730129},
+        {"name": "80-84", "value": 5811429},
+        {"name": "≥85", "value": 5938752}
+    ]
+
+    df = pd.DataFrame(my_data)
+    df.to_csv(output, index=False)
+    return output.getvalue()
+`.trim()
+            }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="D3 Black Box">
+    <div class="text-sm-2">
+        <CodeBlock lang="javascript" height="350px">
+            { `
+const runD3donut = () => {
+    d3.csv("http://localhost:5050/pop-data").then(data => {
+        ...
+        /* Lots of D3 and SVG cleverness... */
+        ...
+    }
+}
+
+export default function D3DonutExample() {
+    useEffect(() => {
+        runD3donut()
+    }, [])
+
+    return (
+        <div id="my_dataviz">
+        </div>
+    )
+}
+`.trim()
+            }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="D3 Donut">
+    <div class="flex justify-center items-center">
+        <Image
+            src={ donut }
+            alt="D3 Donut Plot"
+            height="500"
+            width="500" />
+    </div>
+</Slide>

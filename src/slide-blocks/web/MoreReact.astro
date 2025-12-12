@@ -1,0 +1,161 @@
+---
+import Slide from "../../components/Slide.astro"
+import CodeBlock from "../../components/CodeBlock.astro"
+import CentredImage from "../../components/CentredImage.astro"
+import { Image } from 'astro:assets'
+import inspector from "../../img/web/inspector.png"
+import stack_1 from "../../img/web/stack-1.jpg"
+import stack_2 from "../../img/web/stack-2.jpg"
+import stack_3 from "../../img/web/stack-3.jpg"
+import stack_gradient from "../../img/web/stack-gradient.jpg"
+---
+<Slide t1="More React">
+    <ul>
+        <li class="fragment">Messing around with the DOM</li>
+    </ul>
+</Slide>
+
+<Slide t2="The DOM">
+    <ul>
+        <li class="fragment">The DOM (Document Object Model) is the browser's <em>internal representation</em>
+            of a web page</li>
+        <li class="fragment">Use <code>Inspect</code> in your web browser to see it</li>
+        <li class="fragment">It is displayed as HTML (with CSS classes, styles etc.)</li>
+        <li class="fragment">It is dynamic, and libraries like jQuery, React, Vue, Svelte etc. can change it</li>
+        <li class="fragment">It generally diverges from the original HTML delivered to the browser</li>
+    </ul>
+</Slide>
+
+<Slide>
+    <div class="flex justify-center items-center">
+        <Image
+            src={ inspector }
+            alt="DOM Inspector"
+            height="600"
+            width="800" />
+    </div>
+</Slide>
+
+<Slide>
+    <ul>
+        <li>In React (in Astro), we embedded <em>components</em> into our HTML source</li>
+    </ul>
+
+    <CodeBlock lang="html" height="175px">
+            { `
+<Layout>
+    <h1>Stack Some Boxes</h1>
+    <StackerComponent client:only />
+</Layout>
+            `.trim() }
+    </CodeBlock>
+</Slide>
+
+<Slide>
+    <ul>
+        <li>We <em>implement</em> the components in JavaScript, but can refer to other
+            components (JSX)</li>
+    </ul>
+
+    <div class="flex">
+        <div class="text-sm-2">
+            <CodeBlock lang="jsx" height="200px">
+                { `
+function OneBox({ pos }) {
+    return <div key={pos}
+                style={ {backgroundColor: "red",
+                         border: "3px solid black",
+                         margin: "5px",
+                         width: "200px",
+                         height: "25px"} } />
+}
+                `.trim() }
+            </CodeBlock>
+        </div>
+
+        <div class="text-sm-2">
+            <CodeBlock lang="jsx" height="350px">
+                { `
+export default function StackerComponent() {
+    const [boxes, setBoxes] = useState([])
+
+    function addBox() {
+        setBoxes([      // Replace the entire set of boxes.
+            ...boxes,
+            OneBox({pos: boxes.length})
+        ])
+    }
+
+    return (
+        <>
+            { boxes }
+            <div><button
+                type="button"
+                onClick={ addBox }>Add a box</button></div>
+        </>
+    )
+}
+                `.trim() }
+            </CodeBlock>
+        </div>
+    </div>
+</Slide>
+
+<Slide t2="Box Stacking">
+    <div class="columns-3">
+        {
+            [stack_1, stack_2, stack_3].map(p => (
+                <CentredImage
+                    src={ p }
+                    size={ [175, 200 ] }
+                />
+            ))
+        }
+    </div>
+</Slide>
+
+<Slide t2="State Variables">
+    <ul>
+        <li class="fragment">The React <em>hook</em> <code>useState</code> creates state variables inside components</li>
+        <li class="fragment">Change the state variable, and the page updates to reflect the new value</li>
+    </ul>
+</Slide>
+
+<Slide t1="Exercises">
+    <ul class="text-sm-1">
+        <li class="fragment">How would you randomise the appearance of the boxes?</li>
+
+        <ul class="fragment">
+            <li>Colour (or harder: gradient!)</li>
+            <li>Shape</li>
+            <li>Position</li>
+        </ul>
+
+        <li class="fragment">What other actions could you add?</li>
+
+        <ul class="fragment">
+            <li>Clear</li>
+            <li>Remove last</li>
+            <li>Shuffle</li>
+        </ul>
+    </ul>
+</Slide>
+
+<Slide t2="Randomness">
+    <div class="columns-2">
+        <div class="flex justify-center items-center">
+            <Image
+                src={ stack_gradient }
+                alt="React Stack Gradient"
+                height="200"
+                width="175" />
+        </div>
+
+        <ul>
+            <li>Random size (width, height)</li>
+            <li>Random colour hue</li>
+            <li>Random border radius</li>
+            <li>Random lightness (with gradient)</li>
+        </ul>
+    </div>
+</Slide>

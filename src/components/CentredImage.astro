@@ -1,0 +1,20 @@
+---
+interface Props {
+    src: ImageMetadata,
+    alt?: string,
+    size: number[]
+}
+
+import { Image } from 'astro:assets'
+
+const {src, alt="", size} = Astro.props
+const DEFAULT = 200
+---
+<div class="flex justify-center items-center">
+    <Image
+        src={ src }
+        alt={ alt }
+        height={ size[1] || size[0] || DEFAULT }
+        width={ size[0] || DEFAULT }
+    />
+</div>

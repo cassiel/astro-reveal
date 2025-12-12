@@ -1,0 +1,17 @@
+---
+import Slide from "../components/Slide.astro"
+
+interface Props {
+    title: string
+    author: string
+    email: string
+}
+
+const { title, author, email } = Astro.props
+---
+
+<Slide>
+  <h1>{ title }</h1>
+  <h3>{ author }</h3>
+  <h4><code>{ email }</code></h4>
+</Slide>

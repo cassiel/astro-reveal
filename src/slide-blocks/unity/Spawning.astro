@@ -1,0 +1,156 @@
+---
+import Slide from "../../components/Slide.astro"
+import CodeBlock from "../../components/CodeBlock.astro"
+import { Image } from 'astro:assets'
+import prefab_var from "../../img/unity/prefab-var.png"
+import tag_menu from "../../img/unity/tag-menu.png"
+---
+<Slide t1="Spawning Objects">
+    <ul>
+        <li class="fragment">We spawn instances of objects from <em>prefabs</em></li>
+        <li class="fragment">Create a separate invisible object to do the spawning</li>
+        <li class="fragment">Periodic spawning: use of <code>InvokeRepeating()</code></li>
+        <li class="fragment">Use of random tagging to vary the instances</li>
+        <li class="fragment">Think about cleaning up as well as creating</li>
+    </ul>
+</Slide>
+
+<Slide t2="Prefabs">
+    <ul>
+        <li class="fragment">Prefabs are template objects that we can duplicate into the scene</li>
+        <li class="fragment">Create a prefab by dragging an object into the <code>Prefabs</code> folder</li>
+    </ul>
+</Slide>
+
+<Slide t2="Setup">
+    <ul>
+        <li>The spawning object should have the prefab as a public member variable</li>
+    </ul>
+
+    <div class="flex justify-center items-center">
+        <Image
+            src={ prefab_var }
+            alt="Prefab: Variables"
+            height="300"
+            width="500" />
+    </div>
+</Slide>
+
+<Slide t2="Instantiation">
+    <ul>
+        <li>Create instances in the scene with <code>Instantiate()</code></li>
+    </ul>
+
+    <div class="text-sm-1">
+        <CodeBlock lang="csharp" height="150px">
+            { `
+Vector3 spawnPos = new Vector3(...);
+GameObject a = cubePrefab;
+
+GameObject newObj = Instantiate(a, spawnPos, a.transform.rotation);
+            `.trim() }
+        </CodeBlock>
+    </div>
+
+    <ul>
+        <li><span class="text-red-500">Caution</span>: don't do this every frame!</li>
+    </ul>
+</Slide>
+
+<Slide t2="Periodic Spawning">
+    <ul>
+        <li>We can use <code>InvokeRepeating()</code> to perform an action at a regular
+            period (much less than once per frame)</li>
+    </ul>
+
+    <div class="text-sm-1">
+        <CodeBlock lang="csharp" height="250px">
+            { `
+void Start()
+{
+    InvokeRepeating(nameof(SpawnRandomCube), 2, 1.5f);
+}
+
+void SpawnRandomCube()
+{
+    ...
+}
+            `.trim() }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="Clean-up">
+    <ul>
+        <li>If game objects are being created continuously, we need to remove them too!</li>
+        <li>One approach: each object destroys itself after a certain period of time</li>
+    </ul>
+
+    <div class="text-sm-1">
+        <CodeBlock lang="csharp" height="250px">
+            { `
+void Update()
+{
+    _elapsedTime += Time.deltaTime;
+
+    if (_elapsedTime > 10.0) {
+        Destroy(gameObject);
+    }
+}
+            `.trim() }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="Tagging">
+    <ul class="text-sm-1">
+        <li>We can add tags to objects from the Unity interface</li>
+        <li>These tags are project-wide</li>
+        <li>The tags need to be created before they can be accessed in code</li>
+    </ul>
+
+    <div class="flex justify-center items-center">
+        <Image
+            src={ tag_menu }
+            alt="Unity Tag Menu"
+            height="300"
+            width="400" />
+    </div>
+</Slide>
+
+<Slide t2="Working with Tags">
+    <ul>
+        <li>Set tags on game objects (e.g. when spawning) via the <code>tag</code> property</li>
+    </ul>
+
+    <div class="text-sm-1">
+        <CodeBlock lang="csharp" height="100px">
+            { `
+gameObject.tag = "A";
+            `.trim() }
+        </CodeBlock>
+    </div>
+
+    <ul>
+        <li>Check for tag presence with <code>CompareTag()</code></li>
+    </ul>
+
+    <div class="text-sm-1">
+        <CodeBlock lang="csharp" height="100px">
+            { `
+if (CompareTag("A")) { ... }
+            `.trim() }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="Suggestions">
+    <ul>
+        <li class="fragmnt">Use tagging to spawn objects, randomly choosing between black and white colouring</li>
+        <li class="fragment">Use <code>FAST</code> and <code>SLOW</code> tags to create objects moving at
+            two different speeds (coin toss)</li>
+        <li class="fragment">Use <code>X</code>, <code>Y</code> and <code>Z</code> tags to create objects moving
+            back and forth in one of the three axis dimensions (equal chance)</li>
+        <li class="fragment">(Do we need to use tags? Can we do the above without them?)</li>
+    </ul>
+</Slide>

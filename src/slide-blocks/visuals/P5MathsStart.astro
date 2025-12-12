@@ -1,0 +1,228 @@
+---
+import Slide from "../../components/Slide.astro"
+import Link from "../../components/Link.astro"
+import CodeBlock from "../../components/CodeBlock.astro"
+import { Image } from 'astro:assets'
+import quadratic from "../../img/p5/quadratic.png"
+import cubic from "../../img/p5/cubic.png"
+import live_server from "../../img/p5/live-server.png"
+import complex_plane from "../../img/p5/complex-plane-3-4i.svg"
+import sin_cos_animation from "../../img/sin-cos-animation.gif"
+---
+<Slide t2="Setup (P5.js, VS Code)">
+    <ol class="text-sm-1">
+        <li>Log into P5.js site</li>
+        <li>Fetch an empty P5.js project (can download from the web site)</li>
+        <li>Open the folder (or an enclosing folder) in VS Code</li>
+        <li>"Go Live" in VS Code&mdash;needs Live Server package</li>
+    </ol>
+
+    <div class="flex justify-center items-center">
+        <Image
+            src={ live_server }
+            alt="VS Code Live Server"
+            height="500"
+            width="500" />
+    </div>
+</Slide>
+
+<Slide t2="Math.js">
+    <ul>
+        <li>We can't use the NPM package manager - P5.js sketches are
+            structured differently</li>
+        <li>Download <code>math.js</code> from:
+            <Link href="https://mathjs.org/download.html" /></li>
+        <li>Place in folder alongside <code>index.html</code></li>
+        <li>Edit <code>index.html</code></li>
+    </ul>
+</Slide>
+
+<Slide t2="Loading Math.js">
+    <div class="text-sm-1">
+        <CodeBlock lang="html" height="400px" lines="*|6">
+            { `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://[...]/p5.js"></script>
+    <script src="https://[...]/p5.sound.min.js"></script>
+    <script src=${"math.js"}></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <main>
+    </main>
+    <script src=${"sketch.js"}></script>
+</body>
+</html>
+            `.trim() }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="First Sketch">
+    <div class="text-sm-1">
+        <CodeBlock lang="javascript" height="400px" lines="*|3-4,10-11">
+            { `
+function setup() {
+    createCanvas(400, 400)
+    textSize(36)
+    textAlign(CENTER)
+}
+
+function draw() {
+    background(220)
+
+    const i = math.sqrt(9)
+    text(i, width / 2, height / 2)
+}
+            `.trim() }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="Onward!" visible={ false }>
+    <div class="flex justify-center items-center">
+        <Image
+            src={ quadratic }
+            alt="Quadratic Plot"
+            height="300"
+            width="300" />
+    </div>
+</Slide>
+
+<Slide t2="Fundamentals: Math.js">
+    <ul>
+        <li class="fragment">The library we are using (Math.js) is referred to in the code as
+            <code>math</code>; the built-in
+            JavaScript library is called <code>Math</code></li>
+        <li class="fragment">The two libraries have a lot of the same functions</li>
+        <li class="fragment">Math.js can deal with complex numbers like
+            <span class="text-yellow">\( \sqrt{-1} \)</span> which <code>Math</code> cannot</li>
+    </ul>
+</Slide>
+
+<Slide t2="The Complex Plane">
+    <ul>
+        <li>Complex numbers have a <em>real</em> and an <em>imaginary</em> part</li>
+        <li>Either of these parts can be 0</li>
+        <li>If the imaginary part is 0, the number is a conventional real number</li>
+    </ul>
+    <div class="flex justify-center items-center">
+        <Image
+            src={ complex_plane }
+            alt="The Complex Plane"
+            height="300"
+            width="300" />
+    </div>
+</Slide>
+
+<Slide t2="Evaluation">
+    <ul class="text-sm-2">
+        <li class="fragment">Math.js can also evaluate mathematical equations</li>
+        <li class="fragment">(We can try this in <code>node</code>: new folder,
+            do a <code>npm install mathjs</code> first)</li>
+    </ul>
+
+    <div class="fragment">
+        <CodeBlock lang="javascript" height="100px">
+            { `
+math.evaluate("x^3 - x/2", {x : 10})  // -> 995
+            `.trim() }
+        </CodeBlock>
+    </div>
+
+    <ul class="text-sm-2">
+        <li class="fragment">(JavaScript can obviously evaluate expressions as well, but is not as
+            powerful&mdash;it can't process complex numbers, for instance)</li>
+    </ul>
+
+    <div class="fragment">
+        <CodeBlock lang="javascript" height="100px">
+            { `
+math.evaluate("sqrt(-1)")  // "Complex { re: 0, im: 1 }", in other words i
+// Compare with: Math.sqrt(-1)
+            `.trim() }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="Simple Evaluator Sketch">
+    <div class="text-sm-1">
+        <CodeBlock lang="javascript" height="375px">
+            { `
+const coordinates = math.range(-width/2, width/2).toArray()
+
+for (let xPixel of coordinates) {
+    // Convert pixels to -1.0..1.0 range:
+    let x = map(xPixel, -width/2, width/2, -1, 1)
+
+    /* Evaluate a maths expression, passing
+        in a value for "x": */
+    let y = math.evaluate("x^3 - x/2", {x : x})
+
+    // Convert -1.0..1.0 back to pixels:
+    let yPixel = map(y, -1, 1, height/2, -height/2)
+    circle(xPixel, yPixel, 10)
+}
+            `.trim() }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="Result">
+    <div class="flex justify-center items-center">
+        <Image
+            src={ cubic }
+            alt="Cubic Plot"
+            height="400"
+            width="400" />
+    </div>
+
+</Slide>
+
+<Slide t2="Evaluator: Key Notes">
+    <ul>
+        <li>We are doing all of our graph plotting in x and y coordinates
+            between -1 and 1</li>
+        <li>We have to map the x pixel positions of our dots across the canvas
+            into this range</li>
+        <li>We have to map the result of the equation calculation back into pixels</li>
+    </ul>
+</Slide>
+
+<Slide t2="Mathematical Notes">
+    <ul>
+        <li>A mathematical equation has as many solutions as its
+            <em>degree</em> (linear, quadratic, cubic and so on)
+        </li>
+        <li>
+            Some or all of the roots (solutions) might be complex numbers
+            (e.g. the two solutions for <span class="text-yellow">\( x^2 = -1 \)</span>)
+        </li>
+    </ul>
+</Slide>
+
+<Slide t2="Trigonometry">
+    <ul>
+        <li class="fragment">We can move away from simple polynomials (\( x^2 \), \( x^3 \) etc.)</li>
+        <li class="fragment">The most common trigonometric functions: sine (<code>sin</code>)
+            and cosine (<code>cos</code>)</li>
+        <li class="fragment">Let's try those in P5</li>
+        <li class="fragment">Bonus: combinations of sine and cosine
+            at different frequencies
+        </li>
+    </ul>
+</Slide>
+
+<Slide t2="Sine and Cosine (Animated)">
+    <div class="fragment flex justify-center items-center">
+        <Image
+            src={ sin_cos_animation }
+            alt="Sine/Cosine animation"
+            height="500"
+            width="500" />
+    </div>
+</Slide>

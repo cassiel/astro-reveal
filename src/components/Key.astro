@@ -1,0 +1,26 @@
+---
+interface Props {
+	k: string
+}
+
+const { k } = Astro.props
+---
+<span class="key">{ k }</span>
+
+<style>
+    span.key {
+        background-color: #303030;
+        color: hsl(40, 100%, 80%);
+        font-family: monospace;
+        font-size: 0.7em;
+        text-transform: uppercase;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        border-width: 1px;
+        border-color: white;
+        border-style: solid;
+        border-radius: 8px;
+    }
+</style>

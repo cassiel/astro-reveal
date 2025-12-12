@@ -1,0 +1,18 @@
+---
+interface Props {
+    t1?: string,
+    t2?: string,
+    visible?: boolean,
+    animate?: boolean,
+    splash?: boolean        //  Single-title slide first, to animate
+}
+
+const { t1, t2, visible = true, animate = true, splash = false } = Astro.props
+---
+{ (splash && t1 && <section data-auto-animate={ animate }><h3>{ t1 }</h3></section>) }
+
+<section data-visibility={ visible ? "visible" : "hidden" } data-auto-animate={ animate }>
+    { (t1 && <h3>{ t1 }</h3> ) }
+    { (t2 && <h4>{ t2 }</h4>) }
+    <slot />
+</section>

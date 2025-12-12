@@ -1,0 +1,195 @@
+---
+import Slide from "../../components/Slide.astro"
+import CodeBlock from "../../components/CodeBlock.astro"
+import { Image } from 'astro:assets'
+import one_times from "../../img/iu000244_ddfs/1-times.png"
+
+---
+<Slide t1="React">
+    <ul>
+        <li class="fragment">Front-end(*) framework for interaction
+            and navigation in browser</li>
+        <li class="fragment">Mix of markup and JavaScript (<code>JSX</code>)</li>
+        <li class="fragment">Integrates into Astro (and VS Code)</li>
+        <li class="fragment">Open Source</li>
+    </ul>
+</Slide>
+
+<Slide t2="React Support">
+    <ul>
+        <li>Install with: <code><span class="text-red-500">npx</span> astro add react</code></li>
+    </ul>
+    
+    <div class="text-sm-2">
+        <CodeBlock lang="text" height="300px" lines="5,11">
+            { "  " + `
+  Astro will make the following changes to your config file:
+
+ ╭ astro.config.mjs ─────────────────────────────╮
+ │ // @ts-check                                  │
+ │ import { defineConfig } from 'astro/config';  │
+ │                                               │
+ │ import react from '@astrojs/react';           │
+ │                                               │
+ │ // https://astro.build/config                 │
+ │ export default defineConfig({                 │
+ │   integrations: [react()]                     │
+ │ });                                           │
+ ╰───────────────────────────────────────────────╯
+
+✔ Continue? … yes`.trim()
+            }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="React Support">
+    <div class="text-sm-2">
+        <CodeBlock lang="text" height="400px" lines="13-16">
+            { "  " + `
+  Astro will make the following changes to your tsconfig.json:
+
+ ╭ tsconfig.json ──────────────────────────╮
+ │ {                                       │
+ │   "extends": "astro/tsconfigs/strict",  │
+ │   "include": [                          │
+ │     ".astro/types.d.ts",                │
+ │     "**/*"                              │
+ │   ],                                    │
+ │   "exclude": [                          │
+ │     "dist"                              │
+ │   ],                                    │
+ │   "compilerOptions": {                  │
+ │     "jsx": "react-jsx",                 │
+ │     "jsxImportSource": "react"          │
+ │   }                                     │
+ │ }                                       │
+ ╰─────────────────────────────────────────╯
+
+✔ Continue? … yes`.trim()
+            }
+        </CodeBlock>
+    </div>
+</Slide>
+
+
+<Slide t1="React Example">
+    <ul>
+        <li class="fragment">Leaving Astro's static site features behind...</li>
+        <li class="fragment">But: using it as a host and development environment</li>
+        <li class="fragment">Astro can process <code>.jsx</code> files
+            as if they were components</li>
+    </ul>
+</Slide>
+
+<Slide t2="Astro Page">
+    <div class="text-sm-1">
+        <CodeBlock lang="jsx" height="200px">
+            { `
+---
+import ButtonPair from '../components/ButtonPair.jsx'
+import Layout from '../layouts/Layout.astro'
+---
+<Layout>
+    <ButtonPair />
+</Layout>`.trim()
+            }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="React Component">
+    <p>Single source file <code>ButtonPair.jsx</code></p>
+    <div class="text-sm-2">
+        <CodeBlock lang="jsx" height="250px">
+            { `
+import { useState } from 'react'
+
+export default function ButtonPair() {
+    return (
+        <div>
+            <h1>Counters that update separately</h1>
+            <MyButton />
+            <MyButton />
+        </div>
+    )
+}
+`.trim() }
+        </CodeBlock>
+
+        <CodeBlock lang="jsx" height="250px">
+            { `
+function MyButton() {
+    const [count, setCount] = useState(0)
+  
+    function handleClick() {
+        setCount(count + 1)
+    }
+  
+    return (
+        <button onClick={handleClick}>
+            Clicked {count} times
+        </button>
+    )
+}
+    `.trim() }
+        </CodeBlock>
+    </div>
+
+    <ul>
+        <li class="fragment">Does this actually work?</li>
+        <li class="fragment">Hint: no &#x1F616;</li>
+    </ul>
+</Slide>
+
+<Slide t2="Astro: Hydration">
+    <ul>
+        <li class="fragment">React will run server-side: and
+            this is what Astro is doing here</li>
+        <li class="fragment">We need to <em>hydrate</em> the component
+            so that it is passed to the client (browser)</li>
+    </ul>
+
+    <div class="fragment text-sm-1">
+        <CodeBlock lang="jsx" height="150px">
+            { `
+<Layout>
+    <ButtonPair client:only />
+</Layout>`.trim()
+            }
+        </CodeBlock>
+    </div>
+</Slide>
+
+<Slide t2="Exercises">
+    <ul>
+        <li>Can you extend <code>MyButton</code> so that it can also count down?</li>
+        <li>How about a reset to zero function?</li>
+        <li>As this gets more visually complicated: perhaps add some styling
+            (colour, spacing) and additional text hints
+        </li>
+    </ul>
+</Slide>
+
+<Slide t2="Exercise (Trickier?)">
+    <div class="grid grid-cols-2 gap-20">
+        <div class="flex justify-center items-center">
+            <Image
+                src={ one_times }
+                alt="iPhone Message"
+                height="300"
+                width="450" />
+        </div>
+
+        <div>
+            <ul>
+                <li class="fragment">Don't be this programmer</li>
+                <li class="fragment">What is wrong with this content?</li>
+                <li class="fragment">How do we fix it in our button example?
+                    (<code>Clicked 0 times </code> /
+                    <code>1 <span class="text-red-500">time</span></code> /
+                    <code>2 times</code> etc.)</li>
+            </ul>
+        </div>
+    </div>
+</Slide>

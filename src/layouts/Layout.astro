@@ -1,0 +1,139 @@
+---
+import BreadcrumbFooter from "@components/BreadcrumbFooter.jsx"
+const { BASE_URL } = import.meta.env
+
+interface Props {
+	title: string,
+	mathjax?: boolean
+}
+
+const { title, mathjax = false } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href=`${BASE_URL}/slides-template/favicon.svg` />
+		<meta name="generator" content={Astro.generator} />
+
+		{ mathjax &&
+			<script is:inline type="text/javascript" id="MathJax-script" async
+				src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+			</script>
+		}
+
+		<title>{title}</title>
+	</head>
+
+	<body>
+		<main class="reveal">
+			<div class="slides">
+				<slot />
+			</div>
+			<BreadcrumbFooter client:only />
+		</main>
+
+		<script>
+			import Reveal from "reveal.js"
+			import Markdown from "reveal.js/plugin/markdown/markdown.esm.js"
+			import RevealHighlight from "reveal.js/plugin/highlight/highlight"
+
+			Reveal.initialize({
+				transition: "none",
+				history: true,		//	Maybe false for archive deployments?
+				pdfSeparateFragments: false,
+				slideNumber: "c/t",
+				// progress: false,
+				// controls: false,
+				autoAnimateDuration: 0.5,
+				autoAnimateEasing: "cubic-bezier(0.4, 0, 0.2, 1)",
+				plugins: [Markdown, RevealHighlight]
+			})
+		</script>
+	</body>
+</html>
+
+<style is:global lang="scss">
+	@import "reveal.js/dist/reveal.css";
+	@import "reveal.js/dist/theme/night.css";
+	@import "@styles/highlightjs-theme-vs2015.css";
+
+	/*  Tailwind does bring in more indirection (to its extension machinery in
+		tailwind.config.mjs) - I'm not 100% convinced that's a win when we have
+		Astro components to give us modularity, but will go with it - at least
+		partially. (Sure enough, the styling below is a bit of a mess.) */
+
+	@tailwind base;
+	@tailwind components;
+
+	/*  No obvious way to route these fonts into the Astro/Reveal submodule,
+		so for now we'll expect them in the client's public folder. */
+
+	@layer base {
+		@font-face {
+			font-family: 'Microgramma';
+			src: url('/assets/fonts/microgramma/M025094D.ttf') format('truetype');
+			font-weight: normal;
+			font-style: normal;
+		}
+
+		@font-face {
+			font-family: 'Microgramma';
+			src: url('/assets/fonts/microgramma/Microgramma D Extended Bold.otf') format('opentype');
+			font-weight: bold;
+			font-style: normal;
+		}
+	}
+	
+	main, .slide-background-content {
+		//background: linear-gradient(#133055, #0c1a2a);
+		background: linear-gradient(hsl(200, 15%, 15%),
+									hsl(200, 15%, 30%));
+	}
+
+	.reveal {
+		h1, h2, h3 {
+			@apply font-display;
+		}
+
+		h1 {
+			@apply text-orange font-semibold;
+			font-size: 2em;
+		}
+
+		h2, h3, dt {
+			@apply text-yellow;
+		}
+
+		h2 {
+			font-size: 1.75em;
+		}
+
+		h3 {
+			font-size: 1.5em;
+		}
+
+		a:hover {
+			@apply underline;
+		}
+	}
+
+	code {
+		@apply text-blue text-sm-1;
+	}
+
+	em {
+		color: hsl(40, 60%, 55%);
+	}
+
+	footer.nav {
+		@apply text-lg;
+		position: absolute;
+		bottom: 25px;
+		left: 25px;
+		z-index: 500;
+		color: hsl(0, 0%, 80%);
+	}
+</style>

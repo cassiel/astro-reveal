@@ -1,0 +1,53 @@
+---
+interface Props {
+	lang: string,
+	lines?: string,
+	height?: string
+}
+
+const { lang, lines, height = "100%" } = Astro.props
+---
+<span class="code-container">
+	<span class="code-lang" data-id={`code-lang-${lang}`}>{lang}</span>
+	<pre
+		style={{ height: height }}
+		data-id={`code-pre-${lang}`}><code
+			data-id={`code-code-${lang}`}
+			class={`language-${lang}`}
+			data-line-numbers={lines}><slot /></code></pre>
+</span>
+
+<style is:global lang="scss">
+	.code-container {
+		flex: 0;
+		display: inline-block;
+		text-align: left;
+	}
+
+	.code-lang {
+		display: inline-block;
+		font-size: 0.5em;
+		font-style: italic;
+		margin-left: 0.5em;
+		margin-bottom: 0.5em;
+		opacity: 0.5;
+	}
+
+	.reveal .code-wrapper {
+		display: flex;
+		width: fit-content;
+		background-color: #272822;
+		border-radius: 0.5em;
+		max-height: 82vh;
+		overflow: auto;
+		line-height: 1.2;
+		position: relative;
+		margin: 0;
+
+		& > code {
+			width: fit-content;
+			overflow: hidden;
+			padding: 2em;
+		}
+	}
+</style>

@@ -1,0 +1,66 @@
+---
+import Slide from "../../components/Slide.astro"
+// import CodeBlock from "../../components/CodeBlock.astro"
+// import Link from "../../components/Link.astro"
+import { Image } from 'astro:assets'
+import word_search from "../../img/web/word-search.png"
+import string_search from "../../img/web/string-search.png"
+---
+<Slide t1="String Matching" t2="Text Processing and Styling in React" />
+
+<Slide t2="Worked Example">
+    <ul>
+        <li class="fragment">Start with a corpus of text (pasted from anywhere...)</li>
+        <li class="fragment">Analysis 1: pick out words, do a word search</li>
+        <li class="fragment">Analysis 2: pick out arbitrary substrings in text</li>
+    </ul>
+</Slide>
+
+<Slide t2="Word Search">
+    <div class="flex justify-center items-center">
+        <Image
+            src={ word_search }
+            alt="Word Search"
+            height="600"
+            width="700" />
+    </div>
+</Slide>
+
+<Slide t2="String Search">
+    <div class="flex justify-center items-center">
+        <Image
+            src={ string_search }
+            alt="String Search"
+            height="600"
+            width="700" />
+    </div>
+</Slide>
+
+<Slide t2="Exercise">
+    <ul>
+        <li class="fragment"><span class="italic text-yellow">Provided</span>:
+            working example, word search with CSS class for selected word</li>
+        <li class="fragment"><span class="italic text-yellow">Provided</span>:
+            React element for the string matching</li>
+            <li class="fragment"><span class="italic text-yellow">To do</span>:
+                actually implement the styling to show the results</li>
+            <li class="fragment"><span class="italic text-yellow">To do</span>:
+            Implement both searches on the same page (maybe side by side?)</li>
+        <ul class="fragment">
+            <li>Harder: can you switch between the two searches with a button?</li>
+        </ul>
+    </ul>
+</Slide>
+
+<Slide t2="Stretch Goals">
+    <ul>
+        <li class="fragment">Searching is currently case-sensitive: can you make it ignore case? &#x1F7E1;</li>
+        <li class="fragment">Words are being identified as sequences of non-space symbols: can
+            you actually search for words as sequences of letters (or numbers)? &#x1F534;
+        </li>
+        <li class="fragment">Can you also give an on-screen indication of the number of matches
+            (which can be different for words vs. strings)? &#x2B24;
+        </li>
+        <li class="fragment">Grouping: for each word, show how many times it has occurred &#x2B24;</li>
+    </ul>
+</Slide>

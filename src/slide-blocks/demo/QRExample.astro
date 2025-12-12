@@ -1,0 +1,19 @@
+---
+import Slide from "../../components/Slide.astro"
+import QR from "../../components/QR.jsx"
+---
+<Slide t1="QR Code Example">
+    <div class="columns-3">
+        {
+            ["https://cassiel.com", "https://cassiel.music", "https://cassiel.bandcamp.com"].map(p => (
+                <div class="flex justify-center items-center">
+                    <QR client:load
+                        text={ p }
+                        size={ 200 }
+                        dark="#000000"
+                        light="#A0A0A0" />
+                </div>
+            ))
+        }
+	</div>	
+</Slide>

@@ -1,0 +1,38 @@
+---
+import Slide from "../../components/Slide.astro"
+// import Link from "../../components/Link.astro"
+// import CodeBlock from "../../components/CodeBlock.astro"
+import { Image } from 'astro:assets'
+import complex_helper from "../../img/p5/complex-helper.png"
+---
+<Slide t2="The Complex Plane">
+    <ul>
+        <li class="fragment">We have already looked at the complex number
+            plane (real numbers horizontally, imaginary numbers vertically)</li>
+
+        <li class="fragment">We can build complex numbers (using Math.js)
+            and then plot them using P5</li>
+
+        <li class="fragment">From here we can do simple complex arithmetic
+            and plot the results</li>
+    </ul>
+</Slide>
+
+<Slide t2="Complex Number Helper">
+    <ul>
+        <li class="fragment">An interactive P5 sketch which shows
+            complex number addition</li>
+    </ul>
+
+    <div class="fragment flex justify-center items-center">
+        <Image
+            src={ complex_helper }
+            alt="Complex Helper"
+            height="400"
+            width="400" />
+    </div>
+
+    <ul>
+        <li class="fragment">Can you modify it to show multiplication?</li>
+    </ul>
+</Slide>

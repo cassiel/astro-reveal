@@ -1,0 +1,40 @@
+---
+/*  Generate a table by fetching entries for a specific unit name/tag from
+    the legacy JSON file. Knows how to generate a path into the legacy slides.
+ */
+
+import { getCollection } from "astro:content"
+
+interface Props {
+    unit_slug: string
+}
+
+const legacy = await getCollection("legacy")
+
+const { unit_slug } = Astro.props
+---
+<table>
+    <thead>
+        <tr class="text-sm-1">
+            <th>Name</th>
+            <th>Title</th>
+        </tr>
+    </thead>
+
+    <tbody class="text-sm-1">
+        {
+            legacy.filter(x => (x.id === unit_slug)).map(x => (
+                x.data.map(({ file, title }) => <tr>
+                    <td><a href={ `/legacy/${unit_slug}/${file}/index.html` }>{ file }</a></td>
+                    <td>{ title }</td>
+                </tr>)
+            ))
+        }
+    </tbody>
+</table>
+
+<style>
+    table {
+        font-size: 0.7em;
+    }
+</style>
