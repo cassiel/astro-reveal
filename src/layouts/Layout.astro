@@ -65,9 +65,6 @@ const { title, mathjax = false } = Astro.props
 		Astro components to give us modularity, but will go with it - at least
 		partially. (Sure enough, the styling below is a bit of a mess.) */
 
-	@tailwind base;
-	@tailwind components;
-
 	/*  No obvious way to route these fonts into the Astro/Reveal submodule,
 		so for now we'll expect them in the client's public folder. */
 
@@ -136,4 +133,9 @@ const { title, mathjax = false } = Astro.props
 		z-index: 500;
 		color: hsl(0, 0%, 80%);
 	}
+
+	/* Load Tailwind last so utilities can override reveal.js styles */
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
 </style>

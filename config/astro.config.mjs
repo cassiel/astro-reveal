@@ -18,5 +18,5 @@ export default defineConfig({
   },
 
   trailingSlash: "never",
-  integrations: [tailwind(), react(), mdx()]
+  integrations: [tailwind({ applyBaseStyles: false }), react(), mdx()]
 })
