@@ -1,0 +1,25 @@
+{:tasks
+ {link-configs
+  {:doc "Create symbolic links for config files in presentation-sources root"
+   :requires ([babashka.fs :as fs])
+   :task
+   (do
+     (def config-files
+       ["astro.config.mjs"
+        "package.json"
+        "package-lock.json"
+        "tailwind.config.mjs"
+        "tsconfig.json"])
+     
+     (doseq [config-file config-files]
+       (let [source (str "astro-reveal/config/" config-file)
+             link (str "../.." "/" config-file)]
+         (if (fs/exists? link)
+           (if (fs/sym-link? link)
+             (println (str "✓ Symlink already exists: " config-file))
+             (println (str "⚠ File exists (not a symlink): " config-file)))
+           (do
+             (fs/create-sym-link link source)
+             (println (str "✓ Created symlink: " config-file))))))
+     
+     (println "\nDone!"))}}}
