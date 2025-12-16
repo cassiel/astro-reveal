@@ -11,15 +11,30 @@
         "tailwind.config.mjs"
         "tsconfig.json"])
      
+     (def errors (atom []))
+     
      (doseq [config-file config-files]
        (let [source (str "astro-reveal/config/" config-file)
              link (str "../.." "/" config-file)]
-         (if (fs/exists? link)
-           (if (fs/sym-link? link)
-             (println (str "✓ Symlink already exists: " config-file))
-             (println (str "⚠ File exists (not a symlink): " config-file)))
+         (cond
+           (not (fs/exists? link))
            (do
              (fs/create-sym-link link source)
-             (println (str "✓ Created symlink: " config-file))))))
+             (println (str "✓ Created symlink: " config-file)))
+           
+           (fs/sym-link? link)
+           (println (str "✓ Symlink already exists: " config-file))
+           
+           :else
+           (do
+             (println (str "✗ ERROR: File exists (not a symlink): " config-file))
+             (swap! errors conj config-file)))))
      
-     (println "\nDone!"))}}}
+     (if (empty? (deref errors))
+       (println "\nDone!")
+       (do
+         (println (str "\nERROR: Cannot create symlinks. The following files already exist and are not symlinks:"))
+         (doseq [file (deref errors)]
+           (println (str "  - " file)))
+         (println "\nPlease remove or rename these files before running this task.")
+         (System/exit 1))))}}}
