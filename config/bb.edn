@@ -8,11 +8,10 @@
        ["astro.config.mjs"
         "package.json"
         "package-lock.json"
-        "tailwind.config.mjs"
         "tsconfig.json"])
-     
+
      (def errors (atom []))
-     
+
      (doseq [config-file config-files]
        (let [source (str "astro-reveal/config/" config-file)
              link (str "../.." "/" config-file)]
@@ -21,15 +20,15 @@
            (do
              (fs/create-sym-link link source)
              (println (str "✓ Created symlink: " config-file)))
-           
+
            (fs/sym-link? link)
            (println (str "✓ Symlink already exists: " config-file))
-           
+
            :else
            (do
              (println (str "✗ ERROR: File exists (not a symlink): " config-file))
              (swap! errors conj config-file)))))
-     
+
      (if (empty? (deref errors))
        (println "\nDone!")
        (do
