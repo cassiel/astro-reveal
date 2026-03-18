@@ -1,5 +1,4 @@
 ---
-import "../styles/global.css"
 import BreadcrumbFooter from "@components/BreadcrumbFooter.jsx"
 import "@styles/tailwind.css"
 const { BASE_URL } = import.meta.env
@@ -58,7 +57,6 @@ const { title, mathjax = false } = Astro.props
 </html>
 
 <style is:global lang="scss">
-	@reference "../styles/global.css";
 	@import "reveal.js/dist/reveal.css";
 	@import "reveal.js/dist/theme/night.css";
 	@import "@styles/highlightjs-theme-vs2015.css";
