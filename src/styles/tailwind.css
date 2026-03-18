@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+	--color-yellow: hsl(45, 80%, 70%);
+	--color-orange: hsl(30, 80%, 70%);
+	--color-blue: hsl(200, 80%, 70%);
+	--color-purple: hsl(250, 80%, 80%);
+	--color-pale: hsl(0, 0%, 70%);
+	--color-grey: hsl(0, 0%, 50%);
+
+	--font-display: "Microgramma";
+
+	--text-sm-1: 0.9em;
+	--text-sm-2: 0.7em;
+	--text-sm-3: 0.6em;
+	--text-lg-1: 1.1em;
+	--text-lg-2: 1.25em;
+}
