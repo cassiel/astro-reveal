@@ -37,9 +37,9 @@ const { title, mathjax = false } = Astro.props
 		</main>
 
 		<script>
-			import Reveal from "reveal.js"
-			import Markdown from "reveal.js/plugin/markdown/markdown.esm.js"
-			import RevealHighlight from "reveal.js/plugin/highlight/highlight"
+		import Reveal from "reveal.js"
+		import Markdown from "reveal.js/plugin/markdown"
+		import RevealHighlight from "reveal.js/plugin/highlight"
 
 			Reveal.initialize({
 				transition: "none",
@@ -57,8 +57,8 @@ const { title, mathjax = false } = Astro.props
 </html>
 
 <style is:global lang="scss">
-	@import "reveal.js/dist/reveal.css";
-	@import "reveal.js/dist/theme/night.css";
+	@import "reveal.js/reveal.css";
+	@import "reveal.js/theme/night.css";
 	@import "@styles/highlightjs-theme-vs2015.css";
 	@reference "../styles/tailwind.css";
 
