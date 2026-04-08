@@ -1,0 +1,18 @@
+---
+interface Props {
+    path: string,
+    ext?: string,
+    width?: number
+}
+
+const DEFAULT_WIDTH = 640
+const DEFAULT_EXT = "m4v"
+const HOST = "http://localhost:8000"
+
+const {path, ext, width} = Astro.props
+---
+<div class="flex justify-center items-center">
+    <video width={ width || DEFAULT_WIDTH } controls>
+            <source src={ `${HOST}/${path}.${ ext || DEFAULT_EXT }` } type="video/mp4" /> 
+    </video>
+</div>
