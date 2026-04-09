@@ -83,7 +83,7 @@ const { title, mathjax = false } = Astro.props
 		}
 	}
 
-	/*  Tailwind does bring in more indirection
+	/*  Tailwind does bring in more indirection (to its extension machinery in
 		tailwind.config.mjs) - I'm not 100% convinced that's a win when we have
 		Astro components to give us modularity, but will go with it - at least
 		partially. (Sure enough, the styling below is a bit of a mess.) */
@@ -105,6 +105,34 @@ const { title, mathjax = false } = Astro.props
 			font-weight: bold;
 			font-style: normal;
 		}
+
+		@font-face {
+			font-family: 'Open Sans';
+			src: url('/assets/fonts/open-sans/OpenSans-Regular.ttf') format('truetype');
+			font-weight: normal;
+			font-style: normal;
+		}
+
+		@font-face {
+			font-family: 'Open Sans';
+			src: url('/assets/fonts/open-sans/OpenSans-Italic.ttf') format('truetype');
+			font-weight: normal;
+			font-style: italic;
+		}
+
+		@font-face {
+			font-family: 'Open Sans';
+			src: url('/assets/fonts/open-sans/OpenSans-Bold.ttf') format('truetype');
+			font-weight: bold;
+			font-style: normal;
+		}
+
+		@font-face {
+			font-family: 'Open Sans';
+			src: url('/assets/fonts/open-sans/OpenSans-BoldItalic.ttf') format('truetype');
+			font-weight: bold;
+			font-style: italic;
+		}
 	}
 	
 	main, .slide-background-content {
@@ -114,6 +142,8 @@ const { title, mathjax = false } = Astro.props
 	}
 
 	.reveal {
+		@apply font-body;
+
 		h1, h2, h3 {
 			@apply font-display;
 		}
@@ -133,6 +163,12 @@ const { title, mathjax = false } = Astro.props
 
 		h3 {
 			font-size: 1.5em;
+		}
+
+		h4 {
+			@apply font-body;
+			font-weight: 600;
+			font-size: 1.125em;
 		}
 
 		a:hover {

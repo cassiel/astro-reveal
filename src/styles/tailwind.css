@@ -8,6 +8,7 @@
 	--color-pale: hsl(0, 0%, 70%);
 	--color-grey: hsl(0, 0%, 50%);
 
+	--font-body: "Open Sans", sans-serif;
 	--font-display: "Microgramma";
 
 	--text-sm-1: 0.9em;
