@@ -41,11 +41,12 @@ const { title, mathjax = false } = Astro.props
 		import Markdown from "reveal.js/plugin/markdown"
 		import RevealHighlight from "reveal.js/plugin/highlight"
 
-			Reveal.initialize({
-				transition: "none",
-				history: true,		//	Maybe false for archive deployments?
-				pdfSeparateFragments: false,
-				slideNumber: "c/t",
+		Reveal.initialize({
+			transition: "none",
+			history: true,		//	Maybe false for archive deployments?
+			pdfSeparateFragments: false,
+			slideNumber: "c/t",
+			display: "block !important",	// Override Tailwind v4 [hidden] { display: none !important } in @layer base
 				// progress: false,
 				// controls: false,
 				autoAnimateDuration: 0.5,
@@ -61,6 +62,26 @@ const { title, mathjax = false } = Astro.props
 	@import "reveal.js/theme/night.css";
 	@import "@styles/highlightjs-theme-vs2015.css";
 	@reference "../styles/tailwind.css";
+
+	/* Tailwind v4 preflight has [hidden] { display: none !important } in @layer base.
+	   Reveal.js sets hidden attr on non-current sections for accessibility, but
+	   expects to control display via CSS/JS. These overrides have higher specificity
+	   within the same layer, so they win over Tailwind's rule. */
+	@layer base {
+		.reveal.overview .slides section[hidden] {
+			display: block !important;
+		}
+
+		html.reveal-print .reveal .slides section[hidden] {
+			display: block !important;
+		}
+
+		@media print {
+			.reveal .slides section[hidden] {
+				display: block !important;
+			}
+		}
+	}
 
 	/*  Tailwind does bring in more indirection
 		tailwind.config.mjs) - I'm not 100% convinced that's a win when we have
