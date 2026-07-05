@@ -67,6 +67,7 @@ const { title, mathjax = false } = Astro.props
 	   Reveal.js sets hidden attr on non-current sections for accessibility, but
 	   expects to control display via CSS/JS. These overrides have higher specificity
 	   within the same layer, so they win over Tailwind's rule. */
+
 	@layer base {
 		.reveal.overview .slides section[hidden] {
 			display: block !important;
@@ -169,6 +170,20 @@ const { title, mathjax = false } = Astro.props
 			@apply font-body;
 			font-weight: 600;
 			font-size: 1.125em;
+		}
+
+		section[data-background] {
+			h3, h4, ul, p {
+			    text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.9);
+
+    			backdrop-filter: blur(5px) brightness(0.8);
+    			padding: 0.2em 0.5em;
+    			border-radius: 20px;
+			}
+
+			li {
+				list-style-position: inside;
+			}
 		}
 
 		h4 > code {
