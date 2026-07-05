@@ -18,5 +18,6 @@ const { t1, t2, visible = true, animate = true, splash = false, background } = A
     data-background={ background }>
     { (t1 && <h3>{ t1 }</h3>) }
     { (t2 && <h4>{ t2 }</h4>) }
-    <slot />
+
+    { (background ? <div class="fragment blurred"><slot /></div> : <slot />) }
 </section>
