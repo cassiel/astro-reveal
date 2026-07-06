@@ -5,10 +5,11 @@ const { BASE_URL } = import.meta.env
 
 interface Props {
 	title: string,
-	mathjax?: boolean
+	mathjax?: boolean,
+	credit?: string
 }
 
-const { title, mathjax = false } = Astro.props
+const { title, mathjax = false, credit = null } = Astro.props
 ---
 
 <!doctype html>
@@ -33,7 +34,7 @@ const { title, mathjax = false } = Astro.props
 			<div class="slides">
 				<slot />
 			</div>
-			<BreadcrumbFooter client:only />
+			<BreadcrumbFooter client:only credit={credit} />
 		</main>
 
 		<script>
@@ -140,6 +141,10 @@ const { title, mathjax = false } = Astro.props
 		//background: linear-gradient(#133055, #0c1a2a);
 		background: linear-gradient(hsl(200, 15%, 15%),
 									hsl(200, 15%, 30%));
+	}
+
+	footer.nav {
+		text-shadow: 0 0 6px rgba(0, 0, 0, 0.9);
 	}
 
 	.reveal {

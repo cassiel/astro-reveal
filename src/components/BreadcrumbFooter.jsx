@@ -1,4 +1,4 @@
-const buildNavBar = () => {
+const buildNavBar = (credit) => {
     const location = window.location.pathname
     const tokens = (location == "/" ? [""] : location.split("/"))
     //  console.log(tokens)
@@ -10,9 +10,9 @@ const buildNavBar = () => {
         return <span key={ i }>{ (i > 0 && <span className="font-bold"> &#x2B95; </span>) }
             <a href={ path }>{ crumb }</a>
         </span>
-    }) }</div>
+    }) } { (credit && <span className="font-bold"> | { credit } </span>) }</div>
 }
 
-export default function BreadcrumbFooter() {
-    return <footer className="nav">{ buildNavBar() }</footer>
+export default function BreadcrumbFooter(props) {
+    return <footer className="nav">{ buildNavBar(props.credit) }</footer>
 }
